@@ -30,7 +30,7 @@ COPY . fineract
 # allowing implementations to switch the driver used by changing start-up parameters (for both tenants and each tenant DB)
 # The commented out lines in the docker-compose.yml illustrate how to do this.
 WORKDIR /fineract/libs
-RUN wget https://downloads.mariadb.com/Connectors/java/connector-java-2.7.3/mariadb-java-client-2.7.3.jar
+RUN wget https://downloads.mariadb.com/Connectors/java/connector-java-2.7.5/mariadb-java-client-2.7.5.jar
 
 # =========================================
 
@@ -41,4 +41,4 @@ COPY --from=builder /fineract/libs /app/libs
 
 WORKDIR /app
 
-ENTRYPOINT ["java", "-Dloader.path=/app/libs/", "-jar", "/app/fineract-provider-1.7.0.jar"]
+ENTRYPOINT ["java", "-Dloader.path=/app/libs/", "-jar", "/app/fineract-provider-1.7.1-fe8a9809.jar"]
