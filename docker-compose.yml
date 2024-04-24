@@ -18,29 +18,48 @@
 
 # NB: Travis CI (dist: bionic) supports up to v3.7
 # (unless we'd install a more recent version in .travis.yml)
-version: '3.7'
+version: "3.7"
 services:
   # Backend service
   fineractmysql:
     image: mariadb:10.6
     volumes:
-      - ./fineract-db/server_collation.cnf:/etc/mysql/conf.d/server_collation.cnf
-      - ./fineract-db/docker:/docker-entrypoint-initdb.d:Z,ro
+      - mysql5_copy:/var/lib/mysql
+      - ../fineract-db/conf.d/server_collation.cnf:/etc/mysql/conf.d/server_collation.cnf
+      - ../fineract-db/docker:/docker-entrypoint-initdb.d:Z,ro
     restart: always
     environment:
+      MARIADB_AUTO_UPGRADE: 1
+      MARIADB_PASSWORD: skdcnwauicn2ucnaecasdsajdnizucawencascdca
+      MARIADB_ROOT_PASSWORD: skdcnwauicn2ucnaecasdsajdnizucawencascdca
+      MARIADB_USER: root
       MYSQL_ROOT_PASSWORD: skdcnwauicn2ucnaecasdsajdnizucawencascdca
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "--password=skdcnwauicn2ucnaecasdsajdnizucawencascdca" ]
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "--password=skdcnwauicn2ucnaecasdsajdnizucawencascdca",
+        ]
       timeout: 10s
       retries: 10
     ports:
-      - "3306:3306"
+      - "3307:3306"
   fineract-server:
     image: fineract:latest
-    volumes:
-      - ./fineract-provider/build/data:/data
+    #volumes:
+    #  - ./fineract-provider/build/data:/data
     healthcheck:
-      test: ["CMD", 'sh', '-c', 'echo -e "Checking for the availability of Fineract server deployment"; while ! nc -z "fineract-server" 8443; do sleep 1; printf "-"; done; echo -e " >> Fineract server has started";' ]
+      test:
+        [
+          "CMD",
+          "sh",
+          "-c",
+          'echo -e "Checking for the availability of Fineract server deployment"; while ! nc -z "fineract-server" 8443; do sleep 1; printf "-"; done; echo -e " >> Fineract server has started";',
+        ]
       timeout: 10s
       retries: 10
     ports:
@@ -86,7 +105,7 @@ services:
       - FINERACT_DEFAULT_TENANTDB_UID=root
       - FINERACT_DEFAULT_TENANTDB_PWD=skdcnwauicn2ucnaecasdsajdnizucawencascdca
       - FINERACT_DEFAULT_TENANTDB_CONN_PARAMS=
-      - FINERACT_DEFAULT_TENANTDB_TIMEZONE=Asia/Kolkata
+      - FINERACT_DEFAULT_TENANTDB_TIMEZONE=Africa/Lagos
       - FINERACT_DEFAULT_TENANTDB_IDENTIFIER=default
       - FINERACT_DEFAULT_TENANTDB_NAME=fineract_default
       - FINERACT_DEFAULT_TENANTDB_DESCRIPTION=Default Demo Tenant
