@@ -19,7 +19,6 @@
 version: "3.8"
 
 services:
-
   db:
     extends:
       file: ./config/docker/compose/mariadb.yml
@@ -32,7 +31,7 @@ services:
     ports:
       - "8443:8443"
     depends_on:
-      db:
+      fineractmysql:
         condition: service_healthy
     env_file:
       - ./config/docker/env/fineract.env
