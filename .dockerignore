@@ -1,9 +1,9 @@
 # NB No ASF ASL header here due to FINERACT-1195
-**/build/*
+#**/build/*
 **/.gradle/*
 **/bin/*
 
-*.jar
+#*.jar
 *.war
 
 # Incremental "docker build" is faster if we can modify the Dockerfile
