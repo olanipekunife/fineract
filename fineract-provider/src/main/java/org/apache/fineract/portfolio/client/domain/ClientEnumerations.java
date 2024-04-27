@@ -69,7 +69,7 @@ public final class ClientEnumerations {
     }
 
     public static EnumOptionData legalForm(final Integer statusId) {
-        return legalForm(LegalForm.fromInt(statusId));
+        return legalForm(LegalForm.fromInt(statusId != null ? statusId : 1));
     }
 
     public static EnumOptionData legalForm(final LegalForm legalForm) {
